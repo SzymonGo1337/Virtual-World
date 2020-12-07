@@ -1,6 +1,8 @@
 #include "core.hpp"
 #include "shader.hpp"
 #include <vector>
+#include <time.h>
+#include <stdlib.h>
 
 void OpenGLMessageCallback(uint, uint, uint, uint severity, int, const char* message, const void*) {
 	std::cout << message << '\n';
@@ -95,12 +97,16 @@ int main(int argv, char** argc) {
 
     setup();
 
+    srand(time(NULL));
+
     //Vertex Buffer & Vertex Array & Index Buffer
     std::vector<Cube> cubes;
     for(uint i = 0; i < 30; ++i) {
         for(uint j = 0; j < 30; ++j) {
             for(uint n = 0; n < 30; ++n) {
-                cubes.push_back(Cube(n, rand() % 5, n));
+                int random = rand() % 5;
+                cubes.push_back(Cube(j, random, n));
+                //std::cout << random << "\n";
             }
         }
     }
