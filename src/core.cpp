@@ -132,3 +132,19 @@ Cube::Cube(float x, float y, float z) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
+
+void Cube::render(uint transform, Mat4 cube_transform) {
+    uint indices[] = {
+        0, 2, 1, 1, 2, 3, //front
+        4, 6, 5, 5, 6, 7, //right
+        8, 10, 9, 9, 10, 11, //back
+        12, 14, 13, 13, 14, 15, //left
+        16, 18, 17, 17, 18, 19, //top
+        20, 22, 21, 21, 22, 23 //bottom 
+    };
+
+    BindVAO();
+    glUniformMatrix4fv(transform, 1, GL_FALSE, glm::value_ptr(cube_transform));
+    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(uint), GL_UNSIGNED_INT, 0);
+    UnbindVAO();
+}

@@ -2,53 +2,6 @@
 #include "shader.hpp"
 #include <vector>
 
-Vertex verts[] = {
-    //front
-    {{-0.5f, -0.5f, 0.5f},  {0.0f, 0.0f}},
-    {{0.5f, -0.5f, 0.5f},   {1.0f, 0.0f}},
-    {{-0.5f, 0.5f, 0.5f},   {0.0f, 1.0f}},
-    {{0.5f, 0.5f, 0.5f},    {1.0f, 1.0f}},
-    
-    //right
-    {{0.5f, -0.5f, 0.5f},   {0.0f, 0.0f}},
-    {{0.5f, -0.5f, -0.5f},  {1.0f, 0.0f}},
-    {{0.5f, 0.5f, 0.5f},    {0.0f, 1.0f}},
-    {{0.5f, 0.5f, -0.5f},   {1.0f, 1.0f}},
-
-    //back
-    {{0.5f, -0.5f, -0.5f},  {0.0f, 0.0f}},
-    {{-0.5f, -0.5f, -0.5f}, {1.0f, 0.0f}},
-    {{0.5f, 0.5f, -0.5f},   {0.0f, 1.0f}},
-    {{-0.5f, 0.5f, -0.5f},  {1.0f, 1.0f}},
-    
-    //left
-    {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}},
-    {{-0.5f, -0.5f, 0.5f},  {1.0f, 0.0f}},
-    {{-0.5f, 0.5f, -0.5f},  {0.0f, 1.0f}},
-    {{-0.5f, 0.5f, 0.5f},   {1.0f, 1.0f}},
-
-    //top
-    {{-0.5f, 0.5f, 0.5f},   {0.0f, 0.0f}},
-    {{0.5f, 0.5f, 0.5f},    {1.0f, 0.0f}},
-    {{-0.5f, 0.5f, -0.5f},  {0.0f, 1.0f}},
-    {{0.5f, 0.5f, -0.5f},   {1.0f, 1.0f}},
-
-    //bottom
-    {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}},
-    {{0.5f, -0.5f, -0.5f},  {1.0f, 0.0f}},
-    {{-0.5f, -0.5f, 0.5f},  {0.0f, 1.0f}},
-    {{0.5f, -0.5f, 0.5f},   {1.0f, 1.0f}},
-};
-
-uint indices[] = {
-    0, 2, 1, 1, 2, 3, //front
-    4, 6, 5, 5, 6, 7, //right
-    8, 10, 9, 9, 10, 11, //back
-    12, 14, 13, 13, 14, 15, //left
-    16, 18, 17, 17, 18, 19, //top
-    20, 22, 21, 21, 22, 23 //bottom 
-};
-
 void OpenGLMessageCallback(uint, uint, uint, uint severity, int, const char* message, const void*) {
 	std::cout << message << '\n';
 }
@@ -90,12 +43,11 @@ const char* fragSrc = R"(
 
 Mat4 view = Mat4(1);
 
-void input(GLFWwindow* window) {
+void keyboard(GLFWwindow* window) {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
 
-    
     if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         view[3].z -= 0.1f;
     } else if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
@@ -146,12 +98,13 @@ int main(int argv, char** argc) {
     //Vertex Buffer & Vertex Array & Index Buffer
     Cube cube(0.0f, 0.0f, 0.0f);
     Cube cube1(1.0f, 0.0f, 0.0f);
+    Cube cube2(0.0f, 0.0f, -1.0f);
 
     //Shader
     Shader shader(vertSrc, fragSrc);
 
     uint u_viewProjection = glGetUniformLocation(shader.GetProgram(), "u_viewProjection");
-    uint u_trasform = glGetUniformLocation(shader.GetProgram(), "u_transform");
+    uint u_transform = glGetUniformLocation(shader.GetProgram(), "u_transform");
 
     Mat4 projection = glm::perspective(glm::radians(90.0f), (float)WIDTH / (float)HEIGHT, 0.001f, 1000.0f); // camera projection
 
@@ -159,7 +112,7 @@ int main(int argv, char** argc) {
 
     //Update
     while(!glfwWindowShouldClose(window)) {
-        input(window);
+        keyboard(window);
 
         glClearColor(5.0f / 255.0f, 255.0f / 255.0f, 247.0f / 255.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -171,15 +124,9 @@ int main(int argv, char** argc) {
         
         //Object draw
         {
-            cube.BindVAO();
-            glUniformMatrix4fv(u_trasform, 1, GL_FALSE, glm::value_ptr(cubeTransform));
-            glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(uint), GL_UNSIGNED_INT, 0);
-            cube.UnbindVAO();
-
-            cube1.BindVAO();
-            glUniformMatrix4fv(u_trasform, 1, GL_FALSE, glm::value_ptr(cubeTransform));
-            glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(uint), GL_UNSIGNED_INT, 0);
-            cube1.UnbindVAO();
+            cube.render(u_transform, cubeTransform);
+            cube1.render(u_transform, cubeTransform);
+            cube2.render(u_transform, cubeTransform);
         }
 
 
