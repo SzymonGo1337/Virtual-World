@@ -1,23 +1,6 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <SOIL2/stb_image.h>
-
-#include <glm/glm.hpp>
-#include <glm/ext/matrix_clip_space.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include <iostream>
-
-#define WIDTH 800
-#define HEIGHT 800
-
-using Mat4 = glm::mat4x4;
-using uint = uint32_t;
-
-struct Vertex {
-    glm::vec3 position;
-    glm::vec2 uv;
-};
+#include "core.hpp"
+#include "shader.hpp"
+#include <vector>
 
 Vertex verts[] = {
     //front
@@ -124,6 +107,23 @@ void input(GLFWwindow* window) {
     } else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         view[3].x += 0.1f;
     }
+
+    if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        view[3].y -= 0.1f;
+    } else if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        view[3].y += 0.1f;
+    }
+}
+
+void setup() {
+    glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+
+    glDebugMessageCallback((GLDEBUGPROC)OpenGLMessageCallback, nullptr);
+    
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_FALSE);
 }
 
 int main(int argv, char** argc) {
@@ -141,58 +141,19 @@ int main(int argv, char** argc) {
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     glViewport(0.0f, 0.0f, WIDTH, HEIGHT);
 
-    glEnable(GL_DEPTH_TEST);
+    setup();
 
-    glEnable(GL_DEBUG_OUTPUT);
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-
-    glDebugMessageCallback((GLDEBUGPROC)OpenGLMessageCallback, nullptr);
-    
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_FALSE);
-
-    //Vertex Buffer & Vertex Array
-    unsigned int VBO, VAO, IBO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-    
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
-    
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), (void*)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(Vertex), (void*)(sizeof(float) * 3));
-
-    //Index Buffer
-    glGenBuffers(1, &IBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    //Vertex Buffer & Vertex Array & Index Buffer
+    Cube cube(0.0f, 0.0f, 0.0f);
+    Cube cube1(1.0f, 0.0f, 0.0f);
 
     //Shader
-    uint vertShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertShader, 1, &vertSrc, NULL);
-    glCompileShader(vertShader);
+    Shader shader(vertSrc, fragSrc);
 
-    uint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragShader, 1, &fragSrc, NULL);
-    glCompileShader(fragShader);
-    
-    uint program = glCreateProgram();
-    glAttachShader(program, vertShader);
-    glAttachShader(program, fragShader);
-    glLinkProgram(program);
-
-    glDeleteShader(vertShader);
-    glDeleteShader(fragShader);
-
-    uint u_viewProjection = glGetUniformLocation(program, "u_viewProjection");
-    uint u_trasform = glGetUniformLocation(program, "u_transform");
-
+    uint u_viewProjection = glGetUniformLocation(shader.GetProgram(), "u_viewProjection");
+    uint u_trasform = glGetUniformLocation(shader.GetProgram(), "u_transform");
 
     Mat4 projection = glm::perspective(glm::radians(90.0f), (float)WIDTH / (float)HEIGHT, 0.001f, 1000.0f); // camera projection
-    
-    
 
     Mat4 cubeTransform = glm::translate(Mat4(1), glm::vec3(0, -1, -3)) * glm::rotate(Mat4(1), glm::radians(45.0f), glm::vec3(0, 1, 0));
 
@@ -204,16 +165,21 @@ int main(int argv, char** argc) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //Begin draw
-        glUseProgram(program);
+        shader.Bind();
         Mat4 viewProjection = projection * glm::inverse(view);
         glUniformMatrix4fv(u_viewProjection, 1, GL_FALSE, glm::value_ptr(viewProjection));
         
         //Object draw
         {
-            glBindVertexArray(VAO);
-            
+            cube.BindVAO();
             glUniformMatrix4fv(u_trasform, 1, GL_FALSE, glm::value_ptr(cubeTransform));
             glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(uint), GL_UNSIGNED_INT, 0);
+            cube.UnbindVAO();
+
+            cube1.BindVAO();
+            glUniformMatrix4fv(u_trasform, 1, GL_FALSE, glm::value_ptr(cubeTransform));
+            glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(uint), GL_UNSIGNED_INT, 0);
+            cube1.UnbindVAO();
         }
 
 
