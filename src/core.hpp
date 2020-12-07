@@ -11,8 +11,8 @@
 
 #include "shader.hpp"
 
-#define WIDTH 800
-#define HEIGHT 800
+#define WIDTH 1280
+#define HEIGHT 720
 
 struct Vertex {
     glm::vec3 position;

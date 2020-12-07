@@ -96,9 +96,18 @@ int main(int argv, char** argc) {
     setup();
 
     //Vertex Buffer & Vertex Array & Index Buffer
-    Cube cube(0.0f, 0.0f, 0.0f);
+    std::vector<Cube> cubes;
+    for(uint i = 0; i < 30; ++i) {
+        for(uint j = 0; j < 30; ++j) {
+            for(uint n = 0; n < 30; ++n) {
+                cubes.push_back(Cube(n, rand() % 5, n));
+            }
+        }
+    }
+    
+    /* Cube cube(0.0f, 0.0f, 0.0f);
     Cube cube1(1.0f, 0.0f, 0.0f);
-    Cube cube2(0.0f, 0.0f, -1.0f);
+    Cube cube2(0.0f, 0.0f, -1.0f); */
 
     //Shader
     Shader shader(vertSrc, fragSrc);
@@ -124,9 +133,17 @@ int main(int argv, char** argc) {
         
         //Object draw
         {
-            cube.render(u_transform, cubeTransform);
+            for(uint i = 0; i < 30; ++i) {
+                for(uint j = 0; j < 30; ++j) {
+                    for(uint n = 0; n < 30; ++n) {
+                        cubes[n].render(u_transform, cubeTransform);
+                    }
+                }
+            }
+
+            /* cube.render(u_transform, cubeTransform);
             cube1.render(u_transform, cubeTransform);
-            cube2.render(u_transform, cubeTransform);
+            cube2.render(u_transform, cubeTransform); */
         }
 
 
