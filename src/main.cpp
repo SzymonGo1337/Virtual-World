@@ -101,19 +101,11 @@ int main(int argv, char** argc) {
 
     //Vertex Buffer & Vertex Array & Index Buffer
     std::vector<Cube> cubes;
-    for(uint i = 0; i < 30; ++i) {
-        for(uint j = 0; j < 30; ++j) {
-            for(uint n = 0; n < 30; ++n) {
-                int random = rand() % 5;
-                cubes.push_back(Cube(j, random, n));
-                //std::cout << random << "\n";
-            }
+    for(int x = 0; x < 30; x++) {
+        for(int z = 0; z < 30; z++) {
+            cubes.emplace_back(x, rand() % 5, z);
         }
     }
-    
-    /* Cube cube(0.0f, 0.0f, 0.0f);
-    Cube cube1(1.0f, 0.0f, 0.0f);
-    Cube cube2(0.0f, 0.0f, -1.0f); */
 
     //Shader
     Shader shader(vertSrc, fragSrc);
@@ -122,8 +114,6 @@ int main(int argv, char** argc) {
     uint u_transform = glGetUniformLocation(shader.GetProgram(), "u_transform");
 
     Mat4 projection = glm::perspective(glm::radians(90.0f), (float)WIDTH / (float)HEIGHT, 0.001f, 1000.0f); // camera projection
-
-    Mat4 cubeTransform = glm::translate(Mat4(1), glm::vec3(0, -1, -3)) * glm::rotate(Mat4(1), glm::radians(45.0f), glm::vec3(0, 1, 0));
 
     //Update
     while(!glfwWindowShouldClose(window)) {
@@ -139,17 +129,9 @@ int main(int argv, char** argc) {
         
         //Object draw
         {
-            for(uint i = 0; i < 30; ++i) {
-                for(uint j = 0; j < 30; ++j) {
-                    for(uint n = 0; n < 30; ++n) {
-                        cubes[n].render(u_transform, cubeTransform);
-                    }
-                }
+            for(auto& cube : cubes) {
+                cube.render(u_transform);
             }
-
-            /* cube.render(u_transform, cubeTransform);
-            cube1.render(u_transform, cubeTransform);
-            cube2.render(u_transform, cubeTransform); */
         }
 
 

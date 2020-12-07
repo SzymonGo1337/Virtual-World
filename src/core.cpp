@@ -1,53 +1,54 @@
 #include "core.hpp"
 
+Vertex verts[] = {
+    //front
+    {{-0.5f, -0.5f, 0.5f},  {0.0f, 0.0f}},
+    {{0.5f, -0.5f, 0.5f},   {1.0f, 0.0f}},
+    {{-0.5f, 0.5f, 0.5f},   {0.0f, 1.0f}},
+    {{0.5f, 0.5f, 0.5f},    {1.0f, 1.0f}},
+
+    //right
+    {{0.5f, -0.5f, 0.5f},   {0.0f, 0.0f}},
+    {{0.5f, -0.5f, -0.5f},  {1.0f, 0.0f}},
+    {{0.5f, 0.5f, 0.5f},    {0.0f, 1.0f}},
+    {{0.5f, 0.5f, -0.5f},   {1.0f, 1.0f}},
+
+    //back
+    {{0.5f, -0.5f, -0.5f},  {0.0f, 0.0f}},
+    {{-0.5f, -0.5f, -0.5f}, {1.0f, 0.0f}},
+    {{0.5f, 0.5f, -0.5f},   {0.0f, 1.0f}},
+    {{-0.5f, 0.5f, -0.5f},  {1.0f, 1.0f}},
+
+    //left
+    {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}},
+    {{-0.5f, -0.5f, 0.5f},  {1.0f, 0.0f}},
+    {{-0.5f, 0.5f, -0.5f},  {0.0f, 1.0f}},
+    {{-0.5f, 0.5f, 0.5f},   {1.0f, 1.0f}},
+
+    //top
+    {{-0.5f, 0.5f, 0.5f},   {0.0f, 0.0f}},
+    {{0.5f, 0.5f, 0.5f},    {1.0f, 0.0f}},
+    {{-0.5f, 0.5f, -0.5f},  {0.0f, 1.0f}},
+    {{0.5f, 0.5f, -0.5f},   {1.0f, 1.0f}},
+
+    //bottom
+    {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}},
+    {{0.5f, -0.5f, -0.5f},  {1.0f, 0.0f}},
+    {{-0.5f, -0.5f, 0.5f},  {0.0f, 1.0f}},
+    {{0.5f, -0.5f, 0.5f},   {1.0f, 1.0f}},
+};
+
+uint indices[] = {
+    0, 2, 1, 1, 2, 3, //front
+    4, 6, 5, 5, 6, 7, //right
+    8, 10, 9, 9, 10, 11, //back
+    12, 14, 13, 13, 14, 15, //left
+    16, 18, 17, 17, 18, 19, //top
+    20, 22, 21, 21, 22, 23 //bottom 
+};
+
 Cube::Cube() {
-    float x = 0.0f, y = 0.0f, z = 0.0f;
-    Vertex verts[] = {
-        //front
-        {{-0.5f + x, -0.5f + y, 0.5f + z},  {0.0f, 0.0f}},
-        {{0.5f + x, -0.5f + y, 0.5f + z},   {1.0f, 0.0f}},
-        {{-0.5f + x, 0.5f + y, 0.5f + z},   {0.0f, 1.0f}},
-        {{0.5f + x, 0.5f + y, 0.5f + z},    {1.0f, 1.0f}},
-    
-        //right
-        {{0.5f + x, -0.5f + y, 0.5f + z},   {0.0f, 0.0f}},
-        {{0.5f + x, -0.5f + y, -0.5f + z},  {1.0f, 0.0f}},
-        {{0.5f + x, 0.5f + y, 0.5f + z},    {0.0f, 1.0f}},
-        {{0.5f + x, 0.5f + y, -0.5f + z},   {1.0f, 1.0f}},
-
-        //back
-        {{0.5f + x, -0.5f + y, -0.5f + z},  {0.0f, 0.0f}},
-        {{-0.5f + x, -0.5f + y, -0.5f + z}, {1.0f, 0.0f}},
-        {{0.5f + x, 0.5f + y, -0.5f + z},   {0.0f, 1.0f}},
-        {{-0.5f + x, 0.5f + y, -0.5f + z},  {1.0f, 1.0f}},
-    
-        //left
-        {{-0.5f + x, -0.5f + y, -0.5f + z}, {0.0f, 0.0f}},
-        {{-0.5f + x, -0.5f + y, 0.5f + z},  {1.0f, 0.0f}},
-        {{-0.5f + x, 0.5f + y, -0.5f + z},  {0.0f, 1.0f}},
-        {{-0.5f + x, 0.5f + y, 0.5f + z},   {1.0f, 1.0f}},
-
-        //top
-        {{-0.5f + x, 0.5f + y, 0.5f + z},   {0.0f, 0.0f}},
-        {{0.5f + x, 0.5f + y, 0.5f + z},    {1.0f, 0.0f}},
-        {{-0.5f + x, 0.5f + y, -0.5f + z},  {0.0f, 1.0f}},
-        {{0.5f + x, 0.5f + y, -0.5f + z},   {1.0f, 1.0f}},
-
-        //bottom
-        {{-0.5f + x, -0.5f + y, -0.5f + z}, {0.0f, 0.0f}},
-        {{0.5f + x, -0.5f + y, -0.5f + z},  {1.0f, 0.0f}},
-        {{-0.5f + x, -0.5f + y, 0.5f + z},  {0.0f, 1.0f}},
-        {{0.5f + x, -0.5f + y, 0.5f + z},   {1.0f, 1.0f}},
-    };
-
-    uint indices[] = {
-        0, 2, 1, 1, 2, 3, //front
-        4, 6, 5, 5, 6, 7, //right
-        8, 10, 9, 9, 10, 11, //back
-        12, 14, 13, 13, 14, 15, //left
-        16, 18, 17, 17, 18, 19, //top
-        20, 22, 21, 21, 22, 23 //bottom 
-    };
+    cubeTransform = glm::translate(Mat4(1), glm::vec3(0, -1, -3));
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -68,52 +69,7 @@ Cube::Cube() {
 }
 
 Cube::Cube(float x, float y, float z) {
-    Vertex verts[] = {
-        //front
-        {{-0.5f + x, -0.5f + y, 0.5f + z},  {0.0f, 0.0f}},
-        {{0.5f + x, -0.5f + y, 0.5f + z},   {1.0f, 0.0f}},
-        {{-0.5f + x, 0.5f + y, 0.5f + z},   {0.0f, 1.0f}},
-        {{0.5f + x, 0.5f + y, 0.5f + z},    {1.0f, 1.0f}},
-    
-        //right
-        {{0.5f + x, -0.5f + y, 0.5f + z},   {0.0f, 0.0f}},
-        {{0.5f + x, -0.5f + y, -0.5f + z},  {1.0f, 0.0f}},
-        {{0.5f + x, 0.5f + y, 0.5f + z},    {0.0f, 1.0f}},
-        {{0.5f + x, 0.5f + y, -0.5f + z},   {1.0f, 1.0f}},
-
-        //back
-        {{0.5f + x, -0.5f + y, -0.5f + z},  {0.0f, 0.0f}},
-        {{-0.5f + x, -0.5f + y, -0.5f + z}, {1.0f, 0.0f}},
-        {{0.5f + x, 0.5f + y, -0.5f + z},   {0.0f, 1.0f}},
-        {{-0.5f + x, 0.5f + y, -0.5f + z},  {1.0f, 1.0f}},
-    
-        //left
-        {{-0.5f + x, -0.5f + y, -0.5f + z}, {0.0f, 0.0f}},
-        {{-0.5f + x, -0.5f + y, 0.5f + z},  {1.0f, 0.0f}},
-        {{-0.5f + x, 0.5f + y, -0.5f + z},  {0.0f, 1.0f}},
-        {{-0.5f + x, 0.5f + y, 0.5f + z},   {1.0f, 1.0f}},
-
-        //top
-        {{-0.5f + x, 0.5f + y, 0.5f + z},   {0.0f, 0.0f}},
-        {{0.5f + x, 0.5f + y, 0.5f + z},    {1.0f, 0.0f}},
-        {{-0.5f + x, 0.5f + y, -0.5f + z},  {0.0f, 1.0f}},
-        {{0.5f + x, 0.5f + y, -0.5f + z},   {1.0f, 1.0f}},
-
-        //bottom
-        {{-0.5f + x, -0.5f + y, -0.5f + z}, {0.0f, 0.0f}},
-        {{0.5f + x, -0.5f + y, -0.5f + z},  {1.0f, 0.0f}},
-        {{-0.5f + x, -0.5f + y, 0.5f + z},  {0.0f, 1.0f}},
-        {{0.5f + x, -0.5f + y, 0.5f + z},   {1.0f, 1.0f}},
-    };
-
-    uint indices[] = {
-        0, 2, 1, 1, 2, 3, //front
-        4, 6, 5, 5, 6, 7, //right
-        8, 10, 9, 9, 10, 11, //back
-        12, 14, 13, 13, 14, 15, //left
-        16, 18, 17, 17, 18, 19, //top
-        20, 22, 21, 21, 22, 23 //bottom 
-    };
+    cubeTransform = glm::translate(Mat4(1), glm::vec3(x, y, z));
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -133,18 +89,9 @@ Cube::Cube(float x, float y, float z) {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
 
-void Cube::render(uint transform, Mat4 cube_transform) {
-    uint indices[] = {
-        0, 2, 1, 1, 2, 3, //front
-        4, 6, 5, 5, 6, 7, //right
-        8, 10, 9, 9, 10, 11, //back
-        12, 14, 13, 13, 14, 15, //left
-        16, 18, 17, 17, 18, 19, //top
-        20, 22, 21, 21, 22, 23 //bottom 
-    };
-
+void Cube::render(uint transform) {
     BindVAO();
-    glUniformMatrix4fv(transform, 1, GL_FALSE, glm::value_ptr(cube_transform));
+    glUniformMatrix4fv(transform, 1, GL_FALSE, glm::value_ptr(cubeTransform));
     glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(uint), GL_UNSIGNED_INT, 0);
     UnbindVAO();
 }

@@ -32,8 +32,9 @@ public:
     void UnbindVAO() { glBindVertexArray(0); }
     void UnbindIBO() { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
 
-    void render(uint transform, Mat4 cube_transform);
+    void render(uint transform);
 
 private:
+    Mat4 cubeTransform;
     unsigned int VBO, VAO, IBO;
 };
