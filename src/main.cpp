@@ -1,8 +1,5 @@
 #include "core.hpp"
 #include "shader.hpp"
-#include <vector>
-#include <time.h>
-#include <stdlib.h>
 
 void OpenGLMessageCallback(uint, uint, uint, uint severity, int, const char* message, const void*) {
 	std::cout << message << '\n';
@@ -114,6 +111,10 @@ int main(int argv, char** argc) {
     uint u_transform = glGetUniformLocation(shader.GetProgram(), "u_transform");
 
     Mat4 projection = glm::perspective(glm::radians(90.0f), (float)WIDTH / (float)HEIGHT, 0.001f, 1000.0f); // camera projection
+
+    view[3].x = 14.6f;
+    view[3].y = 7.7f;
+    view[3].z = 38.1f;
 
     //Update
     while(!glfwWindowShouldClose(window)) {

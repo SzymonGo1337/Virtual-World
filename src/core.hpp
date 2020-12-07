@@ -8,6 +8,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <vector>
+#include <time.h>
+#include <stdlib.h>
 
 #include "shader.hpp"
 
@@ -27,6 +30,10 @@ public:
     void BindVBO() { glBindBuffer(GL_ARRAY_BUFFER, VBO); }
     void BindVAO() { glBindVertexArray(VAO); }
     void BindIBO() { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO); }
+
+    unsigned int GetVBO() { return VBO; }
+    unsigned int GetVAO() { return VAO; }
+    unsigned int GetIBO() { return IBO; }
 
     void UnbindVBO() { glBindBuffer(GL_ARRAY_BUFFER, 0); }
     void UnbindVAO() { glBindVertexArray(0); }
