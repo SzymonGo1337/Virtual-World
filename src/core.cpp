@@ -48,6 +48,7 @@ uint indices[] = {
 };
 
 Cube::Cube() {
+    pos = glm::vec3(0, -1, -3);
     cubeTransform = glm::translate(Mat4(1), glm::vec3(0, -1, -3));
 
     glGenVertexArrays(1, &VAO);
@@ -69,6 +70,7 @@ Cube::Cube() {
 }
 
 Cube::Cube(float x, float y, float z) {
+    pos = glm::vec3(x, y, z);
     cubeTransform = glm::translate(Mat4(1), glm::vec3(x, y, z));
 
     glGenVertexArrays(1, &VAO);

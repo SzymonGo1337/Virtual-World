@@ -36,6 +36,8 @@ public:
     unsigned int GetVAO() { return VAO; }
     unsigned int GetIBO() { return IBO; }
 
+    glm::vec3 GetPos() { return pos; }
+
     void UnbindVBO() { glBindBuffer(GL_ARRAY_BUFFER, 0); }
     void UnbindVAO() { glBindVertexArray(0); }
     void UnbindIBO() { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
@@ -43,6 +45,7 @@ public:
     void render(uint transform);
 
 private:
+    glm::vec3 pos;
     Mat4 cubeTransform;
     unsigned int VBO, VAO, IBO;
 };

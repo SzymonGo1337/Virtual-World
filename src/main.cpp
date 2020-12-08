@@ -50,21 +50,33 @@ void keyboard(GLFWwindow* window) {
     }
 
     if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        view[3].z -= 0.1f;
+        view[3].z -= 0.2f;
     } else if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        view[3].z += 0.1f;
+        view[3].z += 0.2f;
     }
 
     if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        view[3].x -= 0.1f;
+        view[3].x -= 0.2f;
     } else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        view[3].x += 0.1f;
+        view[3].x += 0.2f;
     }
 
     if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        view[3].y -= 0.1f;
+        view[3].y -= 0.2f;
     } else if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        view[3].y += 0.1f;
+        view[3].y += 0.2f;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+        view = glm::rotate(view, glm::radians(2.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    } else if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+        view = glm::rotate(view, glm::radians(-2.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+        view = glm::rotate(view, glm::radians(-2.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    } else if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+        view = glm::rotate(view, glm::radians(2.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     }
 }
 
@@ -120,7 +132,6 @@ int main(int argv, char** argc) {
     view[3].x = 14.6f;
     view[3].y = 7.7f;
     view[3].z = 38.1f;
-
 
     //Update
     while(!glfwWindowShouldClose(window)) {
