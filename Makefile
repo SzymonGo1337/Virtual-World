@@ -9,7 +9,7 @@ CC = g++
 COMPILER_FLAGS = -w -std=c++17
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lopengl32 -lglew32 -lglu32 -lglfw3dll -lfreetyped
+LINKER_FLAGS = -lopengl32 -lglew32 -lglu32 -lglfw3dll -lfreetyped -lsoil2-debug
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = build/app

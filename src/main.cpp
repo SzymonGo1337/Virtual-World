@@ -1,6 +1,8 @@
 #include "core.hpp"
 #include "shader.hpp"
 
+#include "noise.hpp"
+
 void OpenGLMessageCallback(uint, uint, uint, uint severity, int, const char* message, const void*) {
 	std::cout << message << '\n';
 }
@@ -36,7 +38,7 @@ const char* fragSrc = R"(
 
     void main()
     {
-        Color = vec4(v_TexCoord, 0, 1); //u_Color; //* texture(u_Texture, v_TexCoord);
+        Color = u_Color * texture(u_Texture, v_TexCoord); // vec4(v_TexCoord, 0, 1);
     }
 )";
 
@@ -98,13 +100,16 @@ int main(int argv, char** argc) {
 
     //Vertex Buffer & Vertex Array & Index Buffer
     std::vector<Cube> cubes;
-    for(int x = 0; x < 30; x++) {
-        for(int z = 0; z < 30; z++) {
-            cubes.emplace_back(x, rand() % 5, z);
+    for(int x = 0; x < 32; x++) {
+        for(int z = 0; z < 32; z++) {
+            //float y = rand() % 5;
+            cubes.emplace_back(x, perlin::noise((float)(rand() % 9) / 10, (float)(rand() % 9) / 10, (float)(rand() % 9) / 10), z);
         }
     }
 
     //Shader
+    Texture test("test.jpg");
+
     Shader shader(vertSrc, fragSrc);
 
     uint u_viewProjection = glGetUniformLocation(shader.GetProgram(), "u_viewProjection");
@@ -116,6 +121,7 @@ int main(int argv, char** argc) {
     view[3].y = 7.7f;
     view[3].z = 38.1f;
 
+
     //Update
     while(!glfwWindowShouldClose(window)) {
         keyboard(window);
@@ -124,6 +130,7 @@ int main(int argv, char** argc) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //Begin draw
+        test.Bind();
         shader.Bind();
         Mat4 viewProjection = projection * glm::inverse(view);
         glUniformMatrix4fv(u_viewProjection, 1, GL_FALSE, glm::value_ptr(viewProjection));

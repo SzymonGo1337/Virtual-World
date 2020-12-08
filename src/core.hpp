@@ -13,6 +13,7 @@
 #include <stdlib.h>
 
 #include "shader.hpp"
+#include "texture.hpp"
 
 #define WIDTH 1280
 #define HEIGHT 720
