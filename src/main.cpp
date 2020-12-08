@@ -115,7 +115,7 @@ int main(int argv, char** argc) {
     for(int x = 0; x < 32; x++) {
         for(int z = 0; z < 32; z++) {
             //float y = rand() % 5;
-            cubes.emplace_back(x, perlin::noise((float)(rand() % 9) / 10, (float)(rand() % 9) / 10, (float)(rand() % 9) / 10), z);
+            cubes.emplace_back(x, perlin::noise((float)(rand() % 90) / 10, (float)(rand() % 90) / 10, (float)(rand() % 90) / 10), z);
         }
     }
 
