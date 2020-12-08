@@ -112,10 +112,12 @@ int main(int argv, char** argc) {
 
     //Vertex Buffer & Vertex Array & Index Buffer
     std::vector<Cube> cubes;
-    for(int x = 0; x < 32; x++) {
-        for(int z = 0; z < 32; z++) {
+    int sizeX = 128, sizeY = 128;
+    for(int x = 0; x < sizeX; x++) {
+        for(int z = 0; z < sizeY; z++) {
             //float y = rand() % 5;
-            cubes.emplace_back(x, perlin::noise((float)(rand() % 90) / 10, (float)(rand() % 90) / 10, (float)(rand() % 90) / 10), z);
+            float y = perlin::noise((float)x / 32, (float)z / 32) * 10 + perlin::noise((float)x / 8, (float)z / 8) * 5 + perlin::noise((float)x / 64, (float)z / 8) * 12; 
+            cubes.emplace_back(x, y, z);
         }
     }
 
