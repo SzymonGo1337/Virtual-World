@@ -44,10 +44,16 @@ const char* fragSrc = R"(
 
 Mat4 view = Mat4(1);
 
+bool korwin = false;
+
 void keyboard(GLFWwindow* window) {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
+
+    if(glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
+        korwin = true;
+    } else { korwin = false; }
 
     if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         view[3].z -= 0.2f;
@@ -116,13 +122,15 @@ int main(int argv, char** argc) {
     for(int x = 0; x < sizeX; x++) {
         for(int z = 0; z < sizeY; z++) {
             //float y = rand() % 5;
-            float y = perlin::noise((float)x / 32, (float)z / 32) * 10 + perlin::noise((float)x / 8, (float)z / 8) * 5 + perlin::noise((float)x / 64, (float)z / 8) * 12; 
-            cubes.emplace_back(x, y, z);
+            float y = perlin::noise((float)x / 32, (float)z / 32) * 10 + perlin::noise((float)x / 8, (float)z / 8) * 5 + perlin::noise((float)x / 64, (float)z / 8) * 12;
+            float downedY = (int)y;
+            cubes.emplace_back(x, downedY, z);
         }
     }
 
     //Shader
     Texture test("test.jpg");
+    Texture grass("grass.jpg");
 
     Shader shader(vertSrc, fragSrc);
 
@@ -143,7 +151,7 @@ int main(int argv, char** argc) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //Begin draw
-        test.Bind();
+        if(korwin) { test.Bind(); } else { grass.Bind(); }
         shader.Bind();
         Mat4 viewProjection = projection * glm::inverse(view);
         glUniformMatrix4fv(u_viewProjection, 1, GL_FALSE, glm::value_ptr(viewProjection));
