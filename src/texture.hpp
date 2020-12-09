@@ -3,7 +3,7 @@
 #include <iostream>
 #include <SOIL2/stb_image.h>
 
-#include "core.hpp"
+#include "cube.hpp"
 
 class Texture {
 public:

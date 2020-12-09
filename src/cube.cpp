@@ -1,4 +1,4 @@
-#include "core.hpp"
+#include "cube.hpp"
 
 Vertex verts[] = {
     //front
