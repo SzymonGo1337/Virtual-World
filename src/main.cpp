@@ -143,8 +143,6 @@ int main(int argv, char** argc) {
     view[3].y = 7.7f;
     view[3].z = 38.1f;
 
-    //std::cout << cubes[5].GetPos().x << " | " << cubes[5].GetPos().y << " | " << cubes[5].GetPos().z << "\n";
-
     //Update
     while(!glfwWindowShouldClose(window)) {
         keyboard(window);
@@ -164,13 +162,6 @@ int main(int argv, char** argc) {
                 cube.render(u_transform);
             }
         }
-
-        const float radius = 20.0f;
-        float camX = sin(glfwGetTime()) * radius;
-        float camZ = cos(glfwGetTime()) * radius;
-
-        view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(cubes[5].GetPos()), glm::vec3(0.0, 1.0, 0.0));
-
 
         glfwSwapBuffers(window);
         glfwPollEvents();
